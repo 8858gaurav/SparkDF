@@ -70,3 +70,33 @@ if __name__ == '__main__':
     # how to print few lines with foreach function
 #     df3.take(3).foreach(lambda x: print(x)) # this will not work, as take returns a list
     df3.foreach(lambda x: print(x)) # this will work, as foreach is an action and will print each row
+
+    import pyspark.sql.functions as sf
+    data = spark.createDataFrame([(5, 1, -1)], ['start', 'stop', 'step'])
+    data.select(sf.sequence(data.start, data.stop, data.step)).show()
+
+    #Create a DataFrame from a list of tuples.
+    spark.createDataFrame([('Alice', 1)]).show()
+
+    #Create a DataFrame from a list of dictionaries.
+    d = [{'name': 'Alice', 'age': 1}]
+    spark.createDataFrame(d).show()
+
+    #Create a DataFrame with column names specified.
+    spark.createDataFrame([('Alice', 1)], ['name', 'age']).show()
+
+    from pyspark.sql.types import *
+    schema = StructType([
+    StructField("name", StringType(), True),
+    StructField("age", IntegerType(), True)])
+    spark.createDataFrame([('Alice', 1)], schema).show()
+
+    #Create a DataFrame with the schema in DDL formatted string.
+    spark.createDataFrame([('Alice', 1)], "name: string, age: int").show()
+
+    #Create a DataFrame from a pandas DataFrame.
+    spark.createDataFrame(df.toPandas()).show() 
+
+    #Create an empty DataFrame. When initializing an empty DataFrame in PySpark, 
+    # it's mandatory to specify its schema, as the DataFrame lacks data from which the schema can be inferred.
+    spark.createDataFrame([], "name: string, age: int").show()

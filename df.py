@@ -68,7 +68,9 @@ if __name__ == '__main__':
     
 
     # how to print few lines with foreach function
-#     df3.take(3).foreach(lambda x: print(x)) # this will not work, as take returns a list
+    #df3.take(3).foreach(lambda x: print(x)) # this will not work, as take returns a list
+    # in spark df, each record is a spark sql Row object, and foreach is an action that applies a function to each element of the RDD.
+    # so, we can use foreach on the DataFrame directly, but not on the result
     df3.foreach(lambda x: print(x)) # this will work, as foreach is an action and will print each row
 
     import pyspark.sql.functions as sf

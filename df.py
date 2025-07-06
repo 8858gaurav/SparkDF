@@ -1,7 +1,7 @@
-import pyspark
+import pyspark, pandas as pd
 from pyspark.sql.functions import * 
 from pyspark.sql import SparkSession 
-import getpass
+import getpass, time
 username = getpass.getuser()
 print(username)
 
@@ -15,7 +15,7 @@ if __name__ == '__main__':
             .config("spark.sql.warehouse.dir", f"/user/{username}/warehouse") \
             .enableHiveSupport() \
             .config("spark.driver.bindAddress","localhost") \
-            .config("spark.ui.port","4040") \
+            .config("spark.ui.port","4041") \
             .master("local[*]") \
             .getOrCreate()
     spark.sparkContext.setLogLevel('WARN')
@@ -71,21 +71,21 @@ if __name__ == '__main__':
     #df3.take(3).foreach(lambda x: print(x)) # this will not work, as take returns a list
     # in spark df, each record is a spark sql Row object, and foreach is an action that applies a function to each element of the RDD.
     # so, we can use foreach on the DataFrame directly, but not on the result
-    df3.foreach(lambda x: print(x)) # this will work, as foreach is an action and will print each row
+    #df3.foreach(lambda x: print(x)) # this will work, as foreach is an action and will print each row
 
     import pyspark.sql.functions as sf
     data = spark.createDataFrame([(5, 1, -1)], ['start', 'stop', 'step'])
     data.select(sf.sequence(data.start, data.stop, data.step)).show()
 
     #Create a DataFrame from a list of tuples.
-    spark.createDataFrame([('Alice', 1)]).show()
+    print("df creation from a list of tuples", spark.createDataFrame([('Alice', 1)]).show())
 
     #Create a DataFrame from a list of dictionaries.
     d = [{'name': 'Alice', 'age': 1}]
-    spark.createDataFrame(d).show()
+    print("Spark df creation by using list of dict", spark.createDataFrame(d).show())
 
     #Create a DataFrame with column names specified.
-    spark.createDataFrame([('Alice', 1)], ['name', 'age']).show()
+    print("saprk df creation by using list of tupes", spark.createDataFrame([('Alice', 1), ('John', 2)], ['name', 'age']).show())
 
     from pyspark.sql.types import *
     schema = StructType([
@@ -97,8 +97,14 @@ if __name__ == '__main__':
     spark.createDataFrame([('Alice', 1)], "name: string, age: int").show()
 
     #Create a DataFrame from a pandas DataFrame.
-    spark.createDataFrame(df.toPandas()).show() 
+    df1 = pd.DataFrame({'name': ['Alice', 'Bob'], 'age': [1, 2]})
+    print("pandas df", df1)
+    print("data frame by using pandas to spark", spark.createDataFrame(df1).show()) 
 
     #Create an empty DataFrame. When initializing an empty DataFrame in PySpark, 
     # it's mandatory to specify its schema, as the DataFrame lacks data from which the schema can be inferred.
     spark.createDataFrame([], "name: string, age: int").show()
+
+    print(df3.groupBy("customer_state").count().show())
+
+    time.sleep(3600)

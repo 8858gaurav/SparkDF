@@ -27,6 +27,8 @@ if __name__ == '__main__':
 
 
    rdd = spark.sparkContext.parallelize(range(1, 10))
+   # rdd [1, 2, 3, 4]    
+   print("rdd", rdd.take(4))
    df = rdd.map(lambda x: (x, x * 2))
    #df.take(2):  [(1, 2), (2, 4)] 
    df = rdd.map(lambda x: (x, x * 2)).toDF(["id", "value"])

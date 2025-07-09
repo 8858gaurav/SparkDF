@@ -190,9 +190,28 @@ if __name__ == '__main__':
    DF4 = spark.createDataFrame(x, IntegerType())
    print("DF4", DF4.show())
 
+   #create a df from a paralelize list.
+   rdd_new = spark.sparkContext.parallelize(range(90, 100))
+   # rdd_new.take() :[90, 91, 92, ,,,,, 100]
+   df_new = spark.createDataFrame(rdd_new, IntegerType())
+   print("df_new", df_new.show(5))
 
+   # +-----+
+   # |value|
+   # +-----+
+   # |   90|
+   # |   91|
+   # |   92|
+   # |   93|
+   # |   94|
+   # +-----+
 
-
+   #create a df from a paralelize list method2.
+   # this will give you an error, you have to pass the datatype explicitly here in this case.
+   rdd_new1 = spark.sparkContext.parallelize(range(100, 110))
+   df_new1= spark.createDataFrame(rdd_new)
+   print("df_new_1", df_new1.show(5))
+    
    # create a rdd from a local list
    RDD1 = spark.sparkContext.parallelize(x)
    print("RDD1", RDD1.collect())

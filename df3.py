@@ -292,3 +292,94 @@ df.groupBy(['sirname', 'name']).agg({'marks':'sum', 'grade':'sum'}).toPandas().r
 # Dixit	    Aditya	  5	         50
 # Dixit	    Anima	  2	         10
 # Mishra	Tushar	  4	         40
+
+
+data_1 = spark.createDataFrame([{'name': 'A', 'marks': 10}], 'name string, marks int') 
+data_1.show() 
+# +----+-----+ 
+# |name|marks| 
+# +----+-----+ 
+# |   A|   10| 
+# +----+-----+ 
+
+data_1 = spark.createDataFrame([{'name': ['A'], 'marks': [10]}]) 
+data_1.show() 
+# +-----+----+ 
+# |marks|name| 
+# +-----+----+ 
+# | [10]| [A]| 
+# +-----+----+ 
+
+
+data_2 = spark.createDataFrame([ 
+   {"name": "Alice", "age": 30, "city": "New York"}, 
+   {"name": "Bob", "age": 24, "city": "London"}, 
+   {"name": "Charlie", "age": 35, "city": "Paris"} 
+]) 
+data_2.show() 
+data_2.take(2) 
+# +---+--------+-------+ 
+# |age|    city|   name| 
+# +---+--------+-------+ 
+# | 30|New York|  Alice| 
+# | 24|  London|    Bob| 
+# | 35|   Paris|Charlie| 
+# +---+--------+-------+ 
+
+# [Row(age=30, city='New York', name='Alice'), Row(age=24, city='London', name='Bob')] 
+
+
+data_2 = spark.createDataFrame(( 
+   {"name": "Alice", "age": 30, "city": "New York"}, 
+   {"name": "Bob", "age": 24, "city": "London"}, 
+   {"name": "Charlie", "age": 35, "city": "Paris"} 
+)) 
+data_2.show() 
+data_2.take(2) 
+# +---+--------+-------+ 
+# |age|    city|   name| 
+# +---+--------+-------+ 
+# | 30|New York|  Alice| 
+# | 24|  London|    Bob| 
+# | 35|   Paris|Charlie| 
+# +---+--------+-------+ 
+
+# [Row(age=30, city='New York', name='Alice'), Row(age=24, city='London', name='Bob')] 
+
+data_2 = spark.createDataFrame([ 
+   ["Alice", 30, "New York"], 
+   ["Bob",  24,  "London"], 
+   ["Charlie",  35, "Paris"] 
+], 'name string, age integer, city string') 
+data_2.show() 
+data_2.take(2) 
+# +-------+---+--------+ 
+# |   name|age|    city| 
+# +-------+---+--------+ 
+# |  Alice| 30|New York| 
+# |    Bob| 24|  London| 
+# |Charlie| 35|   Paris| 
+# +-------+---+--------+ 
+
+# [Row(name='Alice', age=30, city='New York'), Row(name='Bob', age=24, city='London')] 
+
+data_2 = spark.createDataFrame(( 
+   ["Alice", 30, "New York"], 
+   ["Bob",  24,  "London"], 
+   ["Charlie",  35, "Paris"]) 
+, 'name string, age integer, city string') 
+data_2.show() 
+data_2.take(2) 
+# +-------+---+--------+ 
+# |   name|age|    city| 
+# +-------+---+--------+ 
+# |  Alice| 30|New York| 
+# |    Bob| 24|  London| 
+# |Charlie| 35|   Paris| 
+# +-------+---+--------+ 
+
+# [Row(name='Alice', age=30, city='New York'),  Row(name='Bob', age=24, city='London')] 
+
+ 
+
+ 

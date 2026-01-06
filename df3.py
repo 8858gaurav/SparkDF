@@ -276,6 +276,43 @@ df.groupBy("sirname").agg({'marks':'sum', 'grade':'sum'}).show()
 # |  Dixit|         7|        60|
 # +-------+----------+----------+
 
+df = spark.createDataFrame(data).toDF('Sub', 'Marks', 'Score', 'score_date')
+df = df.withColumn('Grade', expr("""
+case when Marks < 20 THEN 'FAIL' WHEN Marks <= 30 THEN 'PASS' WHEN Marks >30 THEN 'DISTINCTION'  ELSE NULL END """))
+
+data = [("Maths", 12, 12,  '2020-08-01'), ("Pyshics", 15, 13,  '2020-01-01'), ("Chemistry", 18, 14,  '2020-02-01'), ("English", 20, 15,  '2020-03-01'), ("Arts", 25, 16, '2020-04-01'), ("Economics", 30, 18, '2020-05-01'), ("History", 45, 50, '2020-06-01'), ("Computer", 50, 52, '2020-07-01')]
+df.show()
+# +---------+-----+-----+----------+-----------+
+# |      Sub|Marks|Score|score_date|      Grade|
+# +---------+-----+-----+----------+-----------+
+# |    Maths|   12|   12|2020-08-01|       FAIL|
+# |  Pyshics|   15|   13|2020-01-01|       FAIL|
+# |Chemistry|   18|   14|2020-02-01|       FAIL|
+# |  English|   20|   15|2020-03-01|       PASS|
+# |     Arts|   25|   16|2020-04-01|       PASS|
+# |Economics|   30|   18|2020-05-01|       PASS|
+# |  History|   45|   50|2020-06-01|DISTINCTION|
+# | Computer|   50|   52|2020-07-01|DISTINCTION|
+# +---------+-----+-----+----------+-----------+
+df.groupBy('Grade').agg({'Marks':'sum', 'Marks': 'mean', 'Marks':'std'}).show()
+# print the last agg values of a columns
+# +-----------+------------------+
+# |      Grade|     stddev(Marks)|
+# +-----------+------------------+
+# |       FAIL|               3.0|
+# |       PASS|               5.0|
+# |DISTINCTION|3.5355339059327378|
+# +-----------+------------------+
+df.groupBy('Grade').agg({'Marks':'sum', 'Score': 'mean', 'Score': 'sum', 'Marks':'mean'}).show()
+# print the last agg values of a columns:
+# +-----------+----------+----------+
+# |      Grade|sum(Score)|avg(Marks)|
+# +-----------+----------+----------+
+# |       FAIL|        39|      15.0|
+# |       PASS|        49|      25.0|
+# |DISTINCTION|       102|      47.5|
+# +-----------+----------+----------+
+
 df.groupBy("sirname").agg({'marks':'sum', 'grade':'sum'}).toPandas().rename(columns = {'sum(grade)': 'tot_grade', 'sum(marks)':'tot_marks'})
 # this is a pandas df output
 # for multi level group by use this: df.groupBy(['sirname', 'name'])

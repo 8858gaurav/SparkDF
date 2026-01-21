@@ -185,6 +185,13 @@ df[df['marks'] == 20, df.grade].show()
 # |       false|    5|
 # +------------+-----+
 
+df[df['marks'] == 20].show()
+# +------+-------+-----+-----+
+# |  name|sirname|marks|grade|
+# +------+-------+-----+-----+
+# |Gaurav| Mishra|   20|    3|
+# +------+-------+-----+-----+
+
 
 df.selectExpr("sum(IF(sirname = 'Mishra', marks, null)) as new_col_1", "sum(IF(sirname == 'Mishra', marks, null)) as new_col_2").show()
 # +---------+---------+

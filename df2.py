@@ -111,6 +111,39 @@ if __name__ == '__main__':
     # |6          |{arun, kumar}   |delhi    |
     # +-----------+----------------+---------+
 
+    orders_schema_nested_new = StructType([
+        StructField("customer_id", LongType()),
+        StructField("full_name", StructType(
+            [StructField("first_name", StringType()),
+            StructField("age", LongType())
+            ])),
+        StructField("city", StringType())])
+
+    ls -l
+    # total 8
+    # drwxr-xr-x 1 root root 4096 Jan 16 14:24 sample_data/
+    # -rw-r--r-- 1 root root   78 Jan 21 11:21 test.json
+
+    cat test.json
+    # {'customer_id':1,'full_name':{'first_name':'Gaurav','age':30},'city':'Noida'}
+
+    orders_df_3 = spark.read.json('/content/test.json', schema = orders_schema_nested_new)
+    orders_df_3.show()
+    orders_df_3.printSchema()
+    
+    # +-----------+------------+-----+
+    # |customer_id|   full_name| city|
+    # +-----------+------------+-----+
+    # |          1|{Gaurav, 30}|Noida|
+    # +-----------+------------+-----+
+    
+    # root
+    #  |-- customer_id: long (nullable = true)
+    #  |-- full_name: struct (nullable = true)
+    #  |    |-- first_name: string (nullable = true)
+    #  |    |-- age: long (nullable = true)
+    #  |-- city: string (nullable = true)
+
     # Schema DDL
     orders_schema_ddl = 'customer_id long, fullname struct<firstname:string, lastname:string>, city string'
     orders_df_nested2 = spark.read.json("/Users/gauravmishra/Desktop/Adding/SparkDF/Datasets/customerNested.json", schema=orders_schema_ddl)

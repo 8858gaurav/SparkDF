@@ -46,8 +46,18 @@ if __name__ == '__main__':
    # |  8|   16|
    # |  9|   18|
    # +---+-----+
+   
 
+   RDD_1 = spark.sparkContext.parallelize({1,2,3})
+   RDD_1.collect() : [1,2,3]
+   RDD_2 = spark.sparkContext.parallelize((1,2,3))
+   RDD_2.collect(): [1,2,3]
+   RDD_3 = spark.sparkContext.parallelize([1,2,3])
+   RDD_3.collect(): [1,2,3]
 
+   print(spark.createDataFrame(RDD_3, IntegerType()).show()) # gives you an output 
+   print(spark.createDataFrame(RDD_3).show())
+   # gives you an error 
 
 
    rdd1 = spark.sparkContext.parallelize(range(1, 10))
@@ -212,10 +222,10 @@ if __name__ == '__main__':
    df_new1= spark.createDataFrame(rdd_new)
    print("df_new_1", df_new1.show(5))
 
-rdd_2 = spark.sparkContext.parallelize(range(1,10))
-print(rdd_2.collect())
+ rdd_2 = spark.sparkContext.parallelize(range(1,10))
+ print(rdd_2.collect())
 # [1, 2 , ..., 9]
-print(spark.createDataFrame(rdd_2, Integer type()).show())
+ print(spark.createDataFrame(rdd_2, Integer type()).show())
 
 #####
 value 

@@ -147,6 +147,13 @@ df.selectExpr("count(*) as row_cnt", "count(Distinct name) as unique_name", "sum
 # |      5|          5|      150|      3.4|
 # +-------+-----------+---------+---------+
 
+df.select(expr('sum(marks)')).show()
+# +----------+
+# |sum(marks)|
+# +----------+
+# |       150|
+# +----------+
+
 df.createOrReplaceTempView("testing_df")
 
 spark.sql("select count(*) as row_cnt, count(Distinct name) as unique_name, sum(marks) as tot_marks, avg(grade) as avg_grade from testing_df").show()

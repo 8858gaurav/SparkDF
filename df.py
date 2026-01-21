@@ -55,6 +55,28 @@ if __name__ == '__main__':
    RDD_3 = spark.sparkContext.parallelize([1,2,3])
    RDD_3.collect(): [1,2,3]
 
+   RDD_4 = RDD_1.map(lambda x: [x,x+2])
+   print(RDD_4.collect()): [[1,3],[2,4], [3,5]]
+   print(RDD_4.toDF(['id','value']).show())
+
+  id value
+  1 3
+  2 4
+  3 5
+
+  RDD_4 = RDD_1.map(lambda x: (x,x+2))
+  print(RDD_4.collect()): [(1,3),(2,4), (3,5)]
+  print(RDD_4.toDF(['id','value']).show())
+
+  id value
+  1 3
+  2 4
+  3 5
+
+  RDD_4 = RDD_1.map(lambda x: {x,x+2})
+  print(RDD_4.collect()): [{1,3},{2,4}, {3,5}]
+  print(RDD_4.toDF(['id','value']).show()): this will give you an error 
+
    print(spark.createDataFrame(RDD_3, IntegerType()).show()) # gives you an output 
    print(spark.createDataFrame(RDD_3).show())
    # gives you an error 

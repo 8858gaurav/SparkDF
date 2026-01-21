@@ -87,10 +87,20 @@ df.select(['marks', 'grade']).show()
 # |   50|    5|
 # +-----+-----+
 
-df['marks']
-# will not work
-df.marks
-# will not work
+type(df['name']), df['name'], type(df.name)
+# (pyspark.sql.classic.column.Column, Column<'name'>, pyspark.sql.classic.column.Column)
+df['name'].show() or df.marks.show()
+# TypeError: 'Column' object is not callable
+df.select('name').show()
+# +------+
+# |  name|
+# +------+
+# | Anima|
+# |Gaurav|
+# |Ashish|
+# |Tushar|
+# |Aditya|
+# +------+
 
 df.select('marks', df.marks, df['marks']).show()
 # this will work

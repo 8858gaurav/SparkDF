@@ -176,6 +176,18 @@ df.selectExpr("sum(IF(sirname = 'Mishra', marks, null)) as new_col_1", "sum(IF(s
 # |       90|       90|
 # +---------+---------+
 
+df.select(expr('SUM(IF(sirname == "Mishra", marks,0)) AS mishra_tot_marks')).show()
+# +----------------+
+# |mishra_tot_marks|
+# +----------------+
+# |              90|
+# +----------------+
+
+df.select(expr('SUM(IF(sirname == "Mishra", marks,0)) AS mishra_tot_marks',
+               'SUM(IF(sirname == "Dixit", marks,0)) AS dixit_tot_marks')).show()
+# TypeError: expr() takes 1 positional argument but 2 were given: gives an error
+
+
 df.select('marks','grade',expr('marks + grade as new_col')).show()
 # +-----+-----+-------+
 # |marks|grade|new_col|

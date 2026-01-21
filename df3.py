@@ -192,6 +192,38 @@ df[df['marks'] == 20].show()
 # |Gaurav| Mishra|   20|    3|
 # +------+-------+-----+-----+
 
+df[(df['marks'] >= 20) & (df['grade'] >= 2)].show()
+# +------+-------+-----+-----+
+# |  name|sirname|marks|grade|
+# +------+-------+-----+-----+
+# |Gaurav| Mishra|   20|    3|
+# |Ashish| Mishra|   30|    3|
+# |Tushar| Mishra|   40|    4|
+# |Aditya|  Dixit|   50|    5|
+# +------+-------+-----+-----+
+
+df[(df['marks'] >= 20) | (df['grade'] >= 2)].show()
+# +------+-------+-----+-----+
+# |  name|sirname|marks|grade|
+# +------+-------+-----+-----+
+# | Anima|  Dixit|   10|    2|
+# |Gaurav| Mishra|   20|    3|
+# |Ashish| Mishra|   30|    3|
+# |Tushar| Mishra|   40|    4|
+# |Aditya|  Dixit|   50|    5|
+# +------+-------+-----+-----+
+
+df.select(df['marks'] == 20).show()
+# +------------+
+# |(marks = 20)|
+# +------------+
+# |       false|
+# |        true|
+# |       false|
+# |       false|
+# |       false|
+# +------------+
+
 
 df.selectExpr("sum(IF(sirname = 'Mishra', marks, null)) as new_col_1", "sum(IF(sirname == 'Mishra', marks, null)) as new_col_2").show()
 # +---------+---------+

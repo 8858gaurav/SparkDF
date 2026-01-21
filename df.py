@@ -211,6 +211,21 @@ if __name__ == '__main__':
    rdd_new1 = spark.sparkContext.parallelize(range(100, 110))
    df_new1= spark.createDataFrame(rdd_new)
    print("df_new_1", df_new1.show(5))
+
+rdd_2 = spark.sparkContext.parallelize(range(1,10))
+print(rdd_2.collect())
+# [1, 2 , ..., 9]
+print(spark.createDataFrame(rdd_2, Integer type()).show())
+
+#####
+value 
+1
+2
+3
+
+
+
+9
     
    # create a rdd from a local list
    RDD1 = spark.sparkContext.parallelize(x)
